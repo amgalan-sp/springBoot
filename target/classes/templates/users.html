@@ -18,10 +18,10 @@
   </tr>
   </thead>
     <tr th:each="user : ${usersList}">
-      <td>${user.id}</td>
-      <td>${user.name}</td>
-      <td>${user.lastname}</td>
-      <td>${user.age}</td>
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.name}"></td>
+      <td th:text="${user.lastname}"></td>
+      <td th:text="${user.age}"></td>
       <td>
         <a th:href="@{/edit/${user.id}}">edit</a>
         <a th:href="@{/delete/${user.id}}">delete</a>
