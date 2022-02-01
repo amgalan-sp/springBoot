@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head>
+<body>
+
+<h2>Users</h2>
+<table class="table table-striped mt-2 mb-4">
+  <thead class="thead-dark">
+  <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>lastname</th>
+    <th>age</th>
+  </tr>
+  </thead>
+    <tr th:each="user : ${usersList}">
+      <td>${user.id}</td>
+      <td>${user.name}</td>
+      <td>${user.lastname}</td>
+      <td>${user.age}</td>
+      <td>
+        <a th:href="@{/edit/${user.id}}">edit</a>
+        <a th:href="@{/delete/${user.id}}">delete</a>
+      </td>
+    </tr>
+</table>
+
+<h2>Add</h2>
+
+<!--<p class="my-5"><a href="/signup" class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>-->
+<!--<%&#45;&#45;<c:url value="/add" var="add"/>&#45;&#45;%>-->
+
+<!--<a href="${add}">Add new user</a>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
+</body>
+</html>

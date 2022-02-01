@@ -1,5 +1,8 @@
 package mvc.springBoot.controller;
 import mvc.springBoot.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import mvc.springBoot.entity.User;
 //import mvc.springBoot.service.UserService;
@@ -14,7 +17,21 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
+
+//    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    public ModelAndView allUsers() {
+//        List<User>  users = userRepository.allUsers();
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("users");
+//        modelAndView.addObject("usersList", users);
+//        return modelAndView;
+//    }
+//    @GetMapping("/")
+//    public ResponseEntity<List<User>> getAll() {
+//        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+//    }
+//    private UserRepository userRepository;
 
 //    public void setUserService(UserService userService) {
 //        this.userService = userService;
@@ -24,12 +41,21 @@ public class UserController {
 //    public List<User> allUsers() {
 //        return userRepository.findAll();
 //    }
-    @GetMapping("/users")
+//    @GetMapping("/users")
+//    public String allUsers(Model model) {
+//        model.addAttribute("users", userRepository.findAll());
+//        return "user";
+//    }
+//    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    public String allUsers() {
+//        userRepository.findAll();
+//        return "users.jsp";
+//    }
+    @GetMapping("/")
     public String allUsers(Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        return "user";
+        model.addAttribute("usersList", userRepository.findAll());
+        return "users";
     }
-
 }
 //
 //    @GetMapping(value = "/edit/{id}", method = RequestMethod.GET)
