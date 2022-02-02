@@ -9,8 +9,10 @@ import mvc.springBoot.entity.User;
 //import mvc.springBoot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import javax.validation.Valid;
 
 import java.util.List;
 
@@ -20,53 +22,75 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public ModelAndView allUsers() {
-//        List<User>  users = userRepository.allUsers();
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("users");
-//        modelAndView.addObject("usersList", users);
-//        return modelAndView;
-//    }
-//    @GetMapping("/")
-//    public ResponseEntity<List<User>> getAll() {
-//        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
-//    }
-//    private UserRepository userRepository;
-
-//    public void setUserService(UserService userService) {
-//        this.userService = userService;
-//    }
-
-//    @GetMapping(value = "/users")
-//    public List<User> allUsers() {
-//        return userRepository.findAll();
-//    }
-//    @GetMapping("/users")
-//    public String allUsers(Model model) {
-//        model.addAttribute("users", userRepository.findAll());
-//        return "user";
-//    }
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public String allUsers() {
-//        userRepository.findAll();
-//        return "users.jsp";
-//    }
     @GetMapping("/")
     public String allUsers(Model model) {
         model.addAttribute("usersList", userRepository.findAll());
         return "users";
     }
-}
+
+    @GetMapping("/signup")
+    public String showSignUpForm(User user) {
+        return "editPage";
+    }
+
+    @PostMapping("/add")
+    public String addUser(@Valid User user, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "editPage";
+        }
+
+        userRepository.saveAndFlush(user);
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showUpdateForm(@PathVariable("id") int id, Model model) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        model.addAttribute("user", user);
+        return "editPage";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateUser(@PathVariable("id") int id, @Valid User user, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            user.setId(id);
+            return "editPage";
+        }
+        userRepository.save(user);
+        return "redirect:/";
+    }
+
+
+//    @PostMapping("/adduser")
+//    public String addUser(@Valid User user, BindingResult result, Model model) {
+//        if (result.hasErrors()) {
+//            return "add-user";
+//        }
 //
-//    @GetMapping(value = "/edit/{id}", method = RequestMethod.GET)
-//    public ModelAndView editPage(@PathVariable("id") int id) {
-//        User user = userService.getById(id);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("editPage");
-//        modelAndView.addObject("user", userService.getById(id));
-//        return modelAndView;
+//        userRepository.save(user);
+//        return "redirect:/index";
 //    }
+//    @PostMapping("/update/{id}")
+//    public String updateUser(@PathVariable("id") int id, @Valid User user, BindingResult result, Model model) {
+//        if (result.hasErrors()) {
+//            user.setId(id);
+//            return "editPage";
+//        }
+//
+//        userRepository.save(user);
+//
+//        return "redirect:/users";
+//    }
+
+//    @GetMapping("/edit/{id}")
+//    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+//        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+//        model.addAttribute("user", user);
+//
+//        return "update-user";
+//    }
+
+}
 //
 //    @GetMapping(value = "/edit", method = RequestMethod.POST)
 //    public ModelAndView editUser(@ModelAttribute("user") User user) {
