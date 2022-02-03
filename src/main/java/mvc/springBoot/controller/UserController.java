@@ -30,15 +30,14 @@ public class UserController {
 
     @GetMapping("/signup")
     public String showSignUpForm(User user) {
-        return "editPage";
+        return "addPage";
     }
 
     @PostMapping("/add")
     public String addUser(@Valid User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "editPage";
+            return "addPage";
         }
-
         userRepository.saveAndFlush(user);
         return "redirect:/";
     }
@@ -57,66 +56,12 @@ public class UserController {
             return "editPage";
         }
         userRepository.save(user);
+        return "redirect:/users";
+    }
+    @GetMapping(value = "/delete/{id}")
+    public String deleteUser(@PathVariable("id") int id, Model model) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        userRepository.delete(user);
         return "redirect:/";
     }
-
-
-//    @PostMapping("/adduser")
-//    public String addUser(@Valid User user, BindingResult result, Model model) {
-//        if (result.hasErrors()) {
-//            return "add-user";
-//        }
-//
-//        userRepository.save(user);
-//        return "redirect:/index";
-//    }
-//    @PostMapping("/update/{id}")
-//    public String updateUser(@PathVariable("id") int id, @Valid User user, BindingResult result, Model model) {
-//        if (result.hasErrors()) {
-//            user.setId(id);
-//            return "editPage";
-//        }
-//
-//        userRepository.save(user);
-//
-//        return "redirect:/users";
-//    }
-
-//    @GetMapping("/edit/{id}")
-//    public String showUpdateForm(@PathVariable("id") long id, Model model) {
-//        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-//        model.addAttribute("user", user);
-//
-//        return "update-user";
-//    }
-
 }
-//
-//    @GetMapping(value = "/edit", method = RequestMethod.POST)
-//    public ModelAndView editUser(@ModelAttribute("user") User user) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("redirect:/");
-//        userService.edit(user);
-//        return modelAndView;
-//    }
-//    @GetMapping(value = "/add", method = RequestMethod.GET)
-//    public ModelAndView addPage() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("editPage");
-//        return modelAndView;
-//    }
-//    @GetMapping(value = "/add", method = RequestMethod.POST)
-//    public ModelAndView addUser(@ModelAttribute("user") User user) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("redirect:/");
-//        userService.add(user);
-//        return modelAndView;
-//    }
-//    @GetMapping(value="/delete/{id}", method = RequestMethod.GET)
-//    public ModelAndView deleteFilm(@PathVariable("id") int id) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("redirect:/");
-//        User user = userService.getById(id);
-//        userService.delete(user);
-//        return modelAndView;
-//    }
